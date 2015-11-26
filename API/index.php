@@ -47,6 +47,18 @@ function echoResponse($status_code, $response) {
     // $response['status'] = $app->response->getStatus();
     // $r = $response->getBody();
     $r->body(json_encode($response));
+    $app->stop();
+
+    /**
+     * Prepare new response object
+     */
+    /*$res = new \Slim\Http\Response();
+    $res->setStatus($status_code);
+    $res->write($response);
+    $res->headers->set('Content-Type', 'application/json;charset=utf-8');
+
+    $array = $res->finalize();
+    echo json_encode($array);*/
 }
 
 $app->run();

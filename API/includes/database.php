@@ -51,11 +51,12 @@ public function query($sql)
       if (!$this->query_id){
         // only for Develope mode
               // die("Error on this Query :<pre> " . $sql ."</pre>");
+              $app = \Slim\Slim::getInstance();
               $arrOut['message']= mysqli_error($this->con);
-              $arrOut['code']=400;
-              // echoResponse(500,$arrOut);
+              echoResponse(500,$arrOut);
+
               // exit();
-              die(json_encode($arrOut));
+              // die(json_encode($arrOut));
         }
        // For production mode
         //  die("Error on Query");

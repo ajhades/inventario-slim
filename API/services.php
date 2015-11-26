@@ -41,6 +41,29 @@ $app->post('/category',function () use ($app) {
      echoResponse(500,$arrOut);
    }
 });
+
+$app->put('/category/:id', function ($id) {
+    
+  echoResponse(400,$id);
+});
+
+$app->delete('/category/:id', function ($id) {
+    $categorie = find_by_id('categories',(int)$id);
+    if (!$categorie) {
+        $arrOut['message'] = "No existe la categoria.";
+        echoResponse(400,$arrOut);
+    }else{
+      $delete_id = delete_by_id('categories',(int)$categorie['id']);
+      if($delete_id){
+          $arrOut['message'] = "Categoria borrada.";
+          echoResponse(200,$arrOut);
+      } else {
+          $arrOut['message'] = "Error al borrar categoria.";
+          echoResponse(400,$arrOut);
+      }
+    }
+    
+});
 //-----------./Categorias------------------//
 //-----------Ventas------------------//
 $app->get('/sales',function (){
