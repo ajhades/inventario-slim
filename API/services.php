@@ -42,16 +42,40 @@ $app->post('/category',function () use ($app) {
    }
 });
 
-$app->put('/category/:id', function ($id) {
-    
-  echoResponse(400,$id);
+$app->put('/category/:id', function ($id) use ($app) {
+  $input = $app->request->put();
+
+  $categorie = find_by_id('categories',(int)$id);
+  if(!$categorie){
+    $arrOut['message'] = "No se encontro el Id de la categoria ".$id;
+    echoResponse(404,$arrOut);
+  }
+  $req_field = array('categorie-name');
+  verifyRequiredParams($req_field,$input);
+  global $db;
+  $cat_name = remove_junk($db->escape($input['categorie-name']));
+  if(empty($errors)){
+        $sql = "UPDATE categories SET name='{$cat_name}'";
+       $sql .= " WHERE id='{$categorie['id']}'";
+     $result = $db->query($sql);
+     if($result && $db->affected_rows() === 1) {
+       $arrOut['message'] = "Categoria actualizada";
+       echoResponse(200,$arrOut);
+     } else {
+       $arrOut['message'] = "Lo sentimos! No se pudo actualizar.";
+       echoResponse(400,$arrOut);
+     }
+  } else {
+    $arrOut['message'] = "Error: ".$errors;
+    echoResponse(500,$arrOut);
+  }    
 });
 
 $app->delete('/category/:id', function ($id) {
     $categorie = find_by_id('categories',(int)$id);
     if (!$categorie) {
-        $arrOut['message'] = "No existe la categoria.";
-        echoResponse(400,$arrOut);
+        $arrOut['message'] = "No existe la categoria ".$id;
+        echoResponse(404,$arrOut);
     }else{
       $delete_id = delete_by_id('categories',(int)$categorie['id']);
       if($delete_id){
@@ -124,6 +148,10 @@ $app->post('/sale',function () use ($app) {
 $app->put('/sale/:id', function ($id) use ($app) {
     //Update book identified by $id
   $sale = find_by_id('sales',$id);
+  if (!$sale) {
+    $arrOut['message'] = "No existe el producto ".$id;
+    echoResponse(404,$arrOut) ;
+  }
   $product = find_by_id('products',$sale['product_id']);
 
   $input = $app->request->post();
