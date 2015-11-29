@@ -1,7 +1,4 @@
 <?php
-$app->get('/hello/:name', function ($name) {
-	 echo "Hello, " . $name;
-});
 //-----------Usuarios------------------//
 $app->get('/users',function (){
 	$all_users = find_all_user();
@@ -93,6 +90,10 @@ $app->delete('/category/:id', function ($id) {
 $app->get('/sales',function (){
 	$sales = find_all_sale();
 	echoResponse(200,$sales);
+});
+$app->get('/sales/:id',function ($id){
+  $sale = find_by_id('sales',(int)$id);
+  echoResponse(200,$sale);
 });
 $app->get('/sales/:report',function ($report){
   switch ($report) {

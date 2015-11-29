@@ -53,6 +53,7 @@ class Session {
   }
 }
 
+global $session;
 $session = new Session();
 $msg = $session->msg();
 

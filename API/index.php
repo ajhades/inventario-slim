@@ -1,11 +1,14 @@
 <?php
 header ( 'Content-type: application / json; charset = utf-8' );
+header("access-control-allow-origin: *");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Headers: origin, content-type, accept");
 date_default_timezone_set('America/Bogota');
 require '../vendor/autoload.php';
 require('includes/load.php');
 
 $app = new \Slim\Slim();
-
+require_once 'auth.php';
 require_once 'services.php';
 
 function verifyRequiredParams($required_fields,$request_params) {
@@ -47,6 +50,8 @@ function echoResponse($status_code, $response) {
     // $response['status'] = $app->response->getStatus();
     // $r = $response->getBody();
     $r->body(json_encode($response));
+    global $db;
+    if(isset($db)) { $db->db_disconnect(); }
     $app->stop();
 
     /**

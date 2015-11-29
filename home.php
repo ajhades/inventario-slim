@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
   $page_title = 'Home Page';
   require_once('includes/load.php');
   if (!$session->isUserLoggedIn(true)) { redirect('index.php', false);}
