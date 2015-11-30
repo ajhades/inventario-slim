@@ -6,9 +6,15 @@ $app->get('/users',function (){
 });
 //-----------./Usuarios------------------//
 //-----------Productos------------------//
-$app->get('/products',function (){
-	$products = join_product_table();
-	echoResponse(200,$products);
+$app->get('/products(/:name)',function ($name=''){
+	
+  if ($name != '') {
+    $products = find_product_by_title($name);
+    echoResponse(200,$products);
+  }else{
+    $products = join_product_table();
+    echoResponse(200,$products);
+  }
 });
 //-----------./Productos------------------//
 //-----------Categorias------------------//
