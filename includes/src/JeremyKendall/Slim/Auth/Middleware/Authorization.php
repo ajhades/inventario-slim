@@ -82,7 +82,7 @@ class Authorization extends \Slim\Middleware
 
             if (!$hasIdentity && !$isAllowed) {
                 // throw new HttpUnauthorizedException();
-                $err = array('message'=>'No autorizado');
+                $err = array('message'=>'No autorizado', 'data' => $role);
                 echoResponse(401,$err);
             }
         };

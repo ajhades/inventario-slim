@@ -81,6 +81,9 @@ $app->get('/logout', function () use ($app) {
         $all_users = array('message'=> 'hola,mundo');
         echoResponse(200,$all_users);
         
+    }else{
+    	$all_users = array('message'=> 'no esta logueado');
+        echoResponse(200,$all_users);
     }
     // $app->redirect('/');
 });
