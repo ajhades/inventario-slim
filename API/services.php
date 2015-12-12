@@ -6,14 +6,14 @@ $app->get('/users',function (){
 });
 //-----------./Usuarios------------------//
 //-----------Productos------------------//
-$app->get('/products(/:name(/single/:name2))',function ($name='',$name2=''){
+$app->get('/products(/:type(/:name))',function ($type='',$name=''){
 	
-  if ($name != '' && $name2 =='') {
+  if ($name != '' && $type =='list') {
     $products = find_product_by_title($name);
     echoResponse(200,$products);
-  }elseif ($name2 !=''){
+  }elseif ($type =='single'){
     global $db;
-    $product_title = remove_junk($db->escape($name2));
+    $product_title = remove_junk($db->escape($name));
     $results = find_all_product_info_by_title($product_title);
     echoResponse(200,$results);
   }else{
@@ -21,12 +21,6 @@ $app->get('/products(/:name(/single/:name2))',function ($name='',$name2=''){
     echoResponse(200,$products);
   }
 });
-/*$app->get('/products/single/:name',function ($name){
-  global $db;
-  $product_title = remove_junk($db->escape($name));
-  $results = find_all_product_info_by_title($product_title);
-  echoResponse(200,$results);
-});*/
 //-----------./Productos------------------//
 //-----------Categorias------------------//
 $app->get('/categories',function (){
@@ -133,7 +127,7 @@ $app->get('/sales/:report',function ($report){
   }
   
 });
-$app->post('/sale',function () use ($app) {
+$app->post('/sales',function () use ($app) {
 	$input = $app->request->post();
 	$req_fields = array('s_id','quantity','price','total' );
     verifyRequiredParams($req_fields,$input);
