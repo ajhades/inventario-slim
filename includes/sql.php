@@ -88,12 +88,12 @@ function tableExists($table){
     $sql  = sprintf("SELECT id,username,password,user_level FROM users WHERE username ='%s' LIMIT 1", $username);
     $result = $db->query($sql);
     if($db->num_rows($result)){
-      $user = $db->fetch_assoc($result);
-      $password_request = sha1($password);
-      if($password_request === $user['password'] ){
-        return $user['id'];
-      }
-    }
+       $user = $db->fetch_assoc($result);
+       $password_request = password_verify($password,$user['password']);
+       if($password_request){
+         return $user;
+       }
+     }
    return false;
   }
   /*--------------------------------------------------------------*/
@@ -109,8 +109,8 @@ function tableExists($table){
      $result = $db->query($sql);
      if($db->num_rows($result)){
        $user = $db->fetch_assoc($result);
-       $password_request = sha1($password);
-       if($password_request === $user['password'] ){
+       $password_request = password_verify($password,$user['password']);
+       if($password_request){
          return $user;
        }
      }

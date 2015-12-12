@@ -9,9 +9,9 @@ if(empty($errors)){
   $user_id = authenticate($username, $password);
   if($user_id){
     //create session with id
-     $session->login($user_id);
+     $session->login($user_id['id']);
     //Update Sign in time
-     updateLastLogIn($user_id);
+     updateLastLogIn($user_id['id']);
      $session->msg("s", "Welcome to OSWA-INV.");
      redirect('home.php',false);
 

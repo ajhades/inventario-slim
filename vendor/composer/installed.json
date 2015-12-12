@@ -46,5 +46,503 @@
             "rest",
             "router"
         ]
+    },
+    {
+        "name": "wp-cli/php-cli-tools",
+        "version": "v0.10.5",
+        "version_normalized": "0.10.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wp-cli/php-cli-tools.git",
+            "reference": "037a010441a5c220cd1df26cdc9b20ad73408356"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wp-cli/php-cli-tools/zipball/037a010441a5c220cd1df26cdc9b20ad73408356",
+            "reference": "037a010441a5c220cd1df26cdc9b20ad73408356",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">= 5.3.0"
+        },
+        "time": "2015-08-10 12:46:19",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "cli": "lib/"
+            },
+            "files": [
+                "lib/cli/cli.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "James Logsdon",
+                "email": "jlogsdon@php.net",
+                "role": "Developer"
+            },
+            {
+                "name": "Daniel Bachhuber",
+                "email": "daniel@handbuilt.co",
+                "role": "Maintainer"
+            }
+        ],
+        "description": "Console utilities for PHP",
+        "homepage": "http://github.com/wp-cli/php-cli-tools",
+        "keywords": [
+            "cli",
+            "console"
+        ]
+    },
+    {
+        "name": "ircmaxell/password-compat",
+        "version": "v1.0.4",
+        "version_normalized": "1.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ircmaxell/password_compat.git",
+            "reference": "5c5cde8822a69545767f7c7f3058cb15ff84614c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/5c5cde8822a69545767f7c7f3058cb15ff84614c",
+            "reference": "5c5cde8822a69545767f7c7f3058cb15ff84614c",
+            "shasum": ""
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2014-11-20 16:49:30",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "lib/password.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anthony Ferrara",
+                "email": "ircmaxell@php.net",
+                "homepage": "http://blog.ircmaxell.com"
+            }
+        ],
+        "description": "A compatibility library for the proposed simplified password hashing algorithm: https://wiki.php.net/rfc/password_hash",
+        "homepage": "https://github.com/ircmaxell/password_compat",
+        "keywords": [
+            "hashing",
+            "password"
+        ]
+    },
+    {
+        "name": "jeremykendall/password-validator",
+        "version": "3.0.3",
+        "version_normalized": "3.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jeremykendall/password-validator.git",
+            "reference": "fed8f83379bbaaf82e056fcfef40fc82d36fe2d4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jeremykendall/password-validator/zipball/fed8f83379bbaaf82e056fcfef40fc82d36fe2d4",
+            "reference": "fed8f83379bbaaf82e056fcfef40fc82d36fe2d4",
+            "shasum": ""
+        },
+        "require": {
+            "ircmaxell/password-compat": "1.*",
+            "php": ">=5.3.7",
+            "wp-cli/php-cli-tools": "0.10.*"
+        },
+        "require-dev": {
+            "league/phpunit-coverage-listener": "~1.1",
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2015-03-25 08:38:48",
+        "bin": [
+            "bin/cost-check",
+            "bin/version-check"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JeremyKendall\\Password\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jeremy Kendall",
+                "homepage": "http://about.me/jeremykendall",
+                "role": "Developer"
+            }
+        ],
+        "description": "Password Validator validates password_hash generated passwords, rehashes passwords as necessary, and will upgrade legacy passwords.",
+        "homepage": "https://github.com/jeremykendall/password-validator",
+        "keywords": [
+            "password",
+            "password validation",
+            "password validator",
+            "password_hash",
+            "passwords",
+            "security"
+        ]
+    },
+    {
+        "name": "zendframework/zend-stdlib",
+        "version": "2.7.4",
+        "version_normalized": "2.7.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-stdlib.git",
+            "reference": "cae029346a33663b998507f94962eb27de060683"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cae029346a33663b998507f94962eb27de060683",
+            "reference": "cae029346a33663b998507f94962eb27de060683",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5",
+            "zendframework/zend-hydrator": "~1.0"
+        },
+        "require-dev": {
+            "athletic/athletic": "~0.1",
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "zendframework/zend-config": "~2.5",
+            "zendframework/zend-eventmanager": "~2.5",
+            "zendframework/zend-filter": "~2.5",
+            "zendframework/zend-inputfilter": "~2.5",
+            "zendframework/zend-serializer": "~2.5",
+            "zendframework/zend-servicemanager": "~2.5"
+        },
+        "suggest": {
+            "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+            "zendframework/zend-filter": "To support naming strategy hydrator usage",
+            "zendframework/zend-serializer": "Zend\\Serializer component",
+            "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+        },
+        "time": "2015-10-15 15:57:32",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.7-dev",
+                "dev-develop": "2.8-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Stdlib\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-stdlib",
+        "keywords": [
+            "stdlib",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-hydrator",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-hydrator.git",
+            "reference": "f3ed8b833355140350bbed98d8a7b8b66875903f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-hydrator/zipball/f3ed8b833355140350bbed98d8a7b8b66875903f",
+            "reference": "f3ed8b833355140350bbed98d8a7b8b66875903f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5",
+            "zendframework/zend-stdlib": "^2.5.1"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "^2.0@dev",
+            "zendframework/zend-eventmanager": "^2.5.1",
+            "zendframework/zend-filter": "^2.5.1",
+            "zendframework/zend-inputfilter": "^2.5.1",
+            "zendframework/zend-serializer": "^2.5.1",
+            "zendframework/zend-servicemanager": "^2.5.1"
+        },
+        "suggest": {
+            "zendframework/zend-eventmanager": "^2.5.1, to support aggregate hydrator usage",
+            "zendframework/zend-filter": "^2.5.1, to support naming strategy hydrator usage",
+            "zendframework/zend-serializer": "^2.5.1, to use the SerializableStrategy",
+            "zendframework/zend-servicemanager": "^2.5.1, to support hydrator plugin manager usage"
+        },
+        "time": "2015-09-17 14:06:43",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev",
+                "dev-develop": "1.1-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Hydrator\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-hydrator",
+        "keywords": [
+            "hydrator",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-authentication",
+        "version": "2.5.2",
+        "version_normalized": "2.5.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-authentication.git",
+            "reference": "1002b40baa9acb3f875cc77f4a2b4fc238b62170"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-authentication/zipball/1002b40baa9acb3f875cc77f4a2b4fc238b62170",
+            "reference": "1002b40baa9acb3f875cc77f4a2b4fc238b62170",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5",
+            "zendframework/zend-stdlib": "~2.5"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "zendframework/zend-crypt": "~2.5",
+            "zendframework/zend-db": "~2.5",
+            "zendframework/zend-http": "~2.5",
+            "zendframework/zend-ldap": "~2.5",
+            "zendframework/zend-session": "~2.5",
+            "zendframework/zend-uri": "~2.5",
+            "zendframework/zend-validator": "~2.5"
+        },
+        "suggest": {
+            "zendframework/zend-crypt": "Zend\\Crypt component",
+            "zendframework/zend-db": "Zend\\Db component",
+            "zendframework/zend-http": "Zend\\Http component",
+            "zendframework/zend-ldap": "Zend\\Ldap component",
+            "zendframework/zend-session": "Zend\\Session component",
+            "zendframework/zend-uri": "Zend\\Uri component",
+            "zendframework/zend-validator": "Zend\\Validator component"
+        },
+        "time": "2015-06-15 19:37:28",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev",
+                "dev-develop": "2.6-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Authentication\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "provides an API for authentication and includes concrete authentication adapters for common use case scenarios",
+        "homepage": "https://github.com/zendframework/zend-authentication",
+        "keywords": [
+            "Authentication",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-permissions-acl",
+        "version": "2.5.1",
+        "version_normalized": "2.5.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-permissions-acl.git",
+            "reference": "7f1aac3bf99d0be8f71fe4ae79981338be8a08dc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-permissions-acl/zipball/7f1aac3bf99d0be8f71fe4ae79981338be8a08dc",
+            "reference": "7f1aac3bf99d0be8f71fe4ae79981338be8a08dc",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "zendframework/zend-di": "~2.5",
+            "zendframework/zend-servicemanager": "~2.5"
+        },
+        "suggest": {
+            "zendframework/zend-servicemanager": "To support Zend\\Permissions\\Acl\\Assertion\\AssertionManager plugin manager usage"
+        },
+        "time": "2015-06-03 15:32:02",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev",
+                "dev-develop": "2.6-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Permissions\\Acl\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "provides a lightweight and flexible access control list (ACL) implementation for privileges management",
+        "homepage": "https://github.com/zendframework/zend-permissions-acl",
+        "keywords": [
+            "acl",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-eventmanager",
+        "version": "2.6.1",
+        "version_normalized": "2.6.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-eventmanager.git",
+            "reference": "a03de810b99b0302059ab744c535d464b8dc4721"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/a03de810b99b0302059ab744c535d464b8dc4721",
+            "reference": "a03de810b99b0302059ab744c535d464b8dc4721",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5",
+            "zendframework/zend-stdlib": "~2.5"
+        },
+        "require-dev": {
+            "athletic/athletic": "dev-master",
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0"
+        },
+        "time": "2015-10-06 11:53:40",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.6-dev",
+                "dev-develop": "3.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\EventManager\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-eventmanager",
+        "keywords": [
+            "eventmanager",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-session",
+        "version": "2.5.2",
+        "version_normalized": "2.5.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-session.git",
+            "reference": "f66caae318c40edb8a6edc22cc2a4e286cb4d064"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-session/zipball/f66caae318c40edb8a6edc22cc2a4e286cb4d064",
+            "reference": "f66caae318c40edb8a6edc22cc2a4e286cb4d064",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5",
+            "zendframework/zend-eventmanager": "~2.5",
+            "zendframework/zend-stdlib": "~2.5"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "zendframework/zend-cache": "~2.5",
+            "zendframework/zend-db": "~2.5",
+            "zendframework/zend-http": "~2.5",
+            "zendframework/zend-servicemanager": "~2.5",
+            "zendframework/zend-validator": "~2.5"
+        },
+        "suggest": {
+            "zendframework/zend-cache": "Zend\\Cache component",
+            "zendframework/zend-db": "Zend\\Db component",
+            "zendframework/zend-eventmanager": "Zend\\EventManager component",
+            "zendframework/zend-http": "Zend\\Http component",
+            "zendframework/zend-servicemanager": "Zend\\ServiceManager component",
+            "zendframework/zend-validator": "Zend\\Validator component"
+        },
+        "time": "2015-07-29 19:44:43",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev",
+                "dev-develop": "2.6-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Session\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "manage and preserve session data, a logical complement of cookie data, across multiple page requests by the same client",
+        "homepage": "https://github.com/zendframework/zend-session",
+        "keywords": [
+            "session",
+            "zf2"
+        ]
     }
 ]

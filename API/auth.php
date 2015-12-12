@@ -13,7 +13,7 @@ $app->get('/session',function (){
 })->name('session');
 
 $app->post('/login', function () use($app) {
-	global $session;
+	/*global $session;
 	$input = $app->request->post();
 
 	if ($session->isUserLoggedIn(true)) { 
@@ -58,6 +58,29 @@ $app->post('/login', function () use($app) {
 
 		$arrOut['message'] = "Error: ".$errors;
         echoResponse(409,$arrOut);
-	}
+	}*/
+	$username = $app->request->post('username');
+    $password = $app->request->post('password');
+	$result = $app->authenticator->authenticate($username, $password);
+        if ($result->isValid()) {
+            // $app->redirect('/');
+          $all_users = array('message'=> 'hola,mundo');
+          echoResponse(200,$all_users);
+        } else {
+            $messages = $result->getMessages();
+            $hashedPassword =password_hash("user", PASSWORD_DEFAULT);
+            // $app->flashNow('error', $messages[0]);
+            $all_users = array('message'=> $messages, 'hash' => $hashedPassword);
+            echoResponse(401,$all_users);
+        }
 
+});
+$app->get('/logout', function () use ($app) {
+    if ($app->auth->hasIdentity()) {
+        $app->auth->clearIdentity();
+        $all_users = array('message'=> 'hola,mundo');
+        echoResponse(200,$all_users);
+        
+    }
+    // $app->redirect('/');
 });

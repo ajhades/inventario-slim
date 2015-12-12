@@ -6,8 +6,32 @@ header("Access-Control-Allow-Headers: origin, content-type, accept");
 date_default_timezone_set('America/Bogota');
 require '../vendor/autoload.php';
 require('includes/load.php');
+require 'example.php';
+
+use JeremyKendall\Password\PasswordValidator;
+use JeremyKendall\Slim\Auth\Adapter\Db\PdoAdapter;
+use JeremyKendall\Slim\Auth\Bootstrap;
+use Zend\Permissions\Acl\Acl;
+use Zend\Permissions\Acl\Role\GenericRole as Role;
+use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 
 $app = new \Slim\Slim();
+
+$user= 'root';
+$pass= '';
+$dbAuth = new \PDO('mysql:host=localhost;dbname='.DB_NAME, DB_USER, DB_PASS);
+$adapter = new PdoAdapter(
+    $dbAuth, 
+    'users', 
+    'username', 
+    'password', 
+    new PasswordValidator()
+);
+
+$acl = new \Example\Acl();
+// $acl->addRole(new Role('guest'));
+$authBootstrap = new Bootstrap($app, $adapter, $acl);
+$authBootstrap->bootstrap();
 require_once 'auth.php';
 require_once 'services.php';
 
@@ -50,8 +74,8 @@ function echoResponse($status_code, $response) {
     // $response['status'] = $app->response->getStatus();
     // $r = $response->getBody();
     $r->body(json_encode($response));
-    global $db;
-    if(isset($db)) { $db->db_disconnect(); }
+    // global $db;
+    // if(isset($db)) { $db->db_disconnect(); }
     $app->stop();
 
     /**

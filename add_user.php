@@ -16,7 +16,7 @@
        $username   = remove_junk($db->escape($_POST['username']));
        $password   = remove_junk($db->escape($_POST['password']));
        $user_level = (int)$db->escape($_POST['level']);
-       $password = sha1($password);
+       $password = password_hash($password, PASSWORD_DEFAULT);
         $query = "INSERT INTO users (";
         $query .="name,username,password,user_level,status";
         $query .=") VALUES (";
@@ -25,15 +25,18 @@
         if($db->query($query)){
           //sucess
           $session->msg('s',"User account has been creted! ");
-          redirect('add_user.php', false);
+          // redirect('add_user.php', false);
+          echo "User account has been creted!";
         } else {
           //failed
           $session->msg('d',' Sorry failed to create account!');
-          redirect('add_user.php', false);
+          // redirect('add_user.php', false);
+          echo "Sorry failed to create account!";
         }
    } else {
      $session->msg("d", $errors);
-      redirect('add_user.php',false);
+      // redirect('add_user.php',false);
+     echo "err";
    }
  }
 ?>
