@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     '14fe5a0d3c05542f73c6f21e946f989c' => $vendorDir . '/wp-cli/php-cli-tools/lib/cli/cli.php',
     '05669301f06448944ce5eb260126f84e' => $vendorDir . '/ircmaxell/password-compat/lib/password.php',
+    '72f8f1fad35e0954fce996b5fee4e838' => $vendorDir . '/jeremykendall/debug-die/src/debug-die.php',
 );

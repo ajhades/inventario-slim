@@ -98,10 +98,10 @@ $app->delete('/category/:id', function ($id) {
 });
 //-----------./Categorias------------------//
 //-----------Ventas------------------//
-$app->get('/sales',function (){
+$app->map('/sales',function (){
 	$sales = find_all_sale();
 	echoResponse(200,$sales);
-});
+})->via('GET', 'OPTIONS');
 $app->get('/sales/:id',function ($id){
   $sale = find_by_id('sales',(int)$id);
   echoResponse(200,$sale);

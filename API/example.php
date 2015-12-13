@@ -39,5 +39,6 @@ class Acl extends ZendAcl
 
         // This allows admin access to everything
         $this->allow('admin');
+        // $this->allow('guest');
     }
 }

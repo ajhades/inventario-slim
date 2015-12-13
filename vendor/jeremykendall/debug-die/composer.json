@@ -1,0 +1,32 @@
+{
+    "name": "jeremykendall/debug-die",
+    "description": "Convenience wrapper around var_dump() and die(var_dump())",
+    "homepage": "https://github.com/jeremykendall/debug-die",
+    "support": {
+        "issues": "https://github.com/jeremykendall/debug-die/issues",
+        "source": "https://github.com/jeremykendall/debug-die"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jeremy Kendall",
+            "email": "jeremy@jeremykendall.net",
+            "homepage": "http://about.me/jeremykendall",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "debugging",
+        "helper",
+        "helper function",
+        "convenience function"
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "files": [
+            "src/debug-die.php"
+        ]
+    }
+}

@@ -11,6 +11,11 @@
         "zendframework/zend-permissions-acl": "2.*",
         "zendframework/zend-session": "2.*"
     },
+    "require-dev": {
+        "league/phpunit-coverage-listener": "~1.1",
+        "phpunit/phpunit": "4.*",
+        "jeremykendall/debug-die": "0.0.1.*"
+    },
     "autoload": {
         "psr-0": {
             "JeremyKendall\\Slim\\Auth\\": "includes/src/"

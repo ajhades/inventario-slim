@@ -65,16 +65,16 @@ $app->post('/login', function () use($app) {
         if ($result->isValid()) {
             // $app->redirect('/');
           $all_users = array('message'=> 'hola,mundo');
-          echoResponse(200,$all_users);
+          echoResponse(200,$result->getIdentity());
         } else {
             $messages = $result->getMessages();
             $hashedPassword =password_hash("user", PASSWORD_DEFAULT);
             // $app->flashNow('error', $messages[0]);
             $all_users = array('message'=> $messages, 'hash' => $hashedPassword);
-            echoResponse(401,$all_users);
+            echoResponse(400,$all_users);
         }
 
-});
+})->name('login');
 $app->get('/logout', function () use ($app) {
     if ($app->auth->hasIdentity()) {
         $app->auth->clearIdentity();
