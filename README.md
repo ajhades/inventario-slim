@@ -1,3 +1,8 @@
+## Basado en un sistema de inventario -- Oswa - inv
+
+Sistema de inventario en PHP con Slim e implementando un API Restful
+
+
 ## Oswa - inv
 
 
