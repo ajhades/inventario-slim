@@ -89,8 +89,8 @@ function tableExists($table){
     $result = $db->query($sql);
     if($db->num_rows($result)){
       $user = $db->fetch_assoc($result);
-      $password_request = sha1($password);
-      if($password_request === $user['password'] ){
+      $password_request = password_verify($password,$user['password']);
+      if($password_request){
         return $user['id'];
       }
     }
@@ -109,14 +109,13 @@ function tableExists($table){
      $result = $db->query($sql);
      if($db->num_rows($result)){
        $user = $db->fetch_assoc($result);
-       $password_request = sha1($password);
-       if($password_request === $user['password'] ){
+       $password_request = password_verify($password,$user['password']);
+       if($password_request){
          return $user;
        }
      }
     return false;
    }
-
 
   /*--------------------------------------------------------------*/
   /* Find current log in user by session id

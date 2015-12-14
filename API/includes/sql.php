@@ -90,11 +90,11 @@ function tableExists($table){
     if($db->num_rows($result)){
       $user = $db->fetch_assoc($result);
       $password_request = password_verify($password,$user['password']);
-      if($password_request === $user['password'] ){
+      if($password_request){
         return $user['id'];
       }
     }
-   return false;
+   return $user;
   }
   /*--------------------------------------------------------------*/
   /* Login with the data provided in $_POST,
@@ -110,7 +110,7 @@ function tableExists($table){
      if($db->num_rows($result)){
        $user = $db->fetch_assoc($result);
        $password_request = password_verify($password,$user['password']);
-       if($password_request === $user['password'] ){
+       if($password_request){
          return $user;
        }
      }
