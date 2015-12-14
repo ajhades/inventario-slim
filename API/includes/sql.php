@@ -89,7 +89,7 @@ function tableExists($table){
     $result = $db->query($sql);
     if($db->num_rows($result)){
       $user = $db->fetch_assoc($result);
-      $password_request = sha1($password);
+      $password_request = password_verify($password,$user['password']);
       if($password_request === $user['password'] ){
         return $user['id'];
       }
@@ -109,7 +109,7 @@ function tableExists($table){
      $result = $db->query($sql);
      if($db->num_rows($result)){
        $user = $db->fetch_assoc($result);
-       $password_request = sha1($password);
+       $password_request = password_verify($password,$user['password']);
        if($password_request === $user['password'] ){
          return $user;
        }
