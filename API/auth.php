@@ -1,4 +1,7 @@
 <?php
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
 $app->get('/session',function (){
 
 	global $session;
@@ -10,11 +13,11 @@ $app->get('/session',function (){
 		$arrOut['level'] = $user['user_level'];
         echoResponse(200,$arrOut);
 	}
-})->name('session');
+})->setName('session');
 
-$app->post('/login', function () use($app) {
+$app->post('/login', function (ServerRequestInterface $request, ResponseInterface $response) {
 	global $session;
-	$input = $app->request->post();
+	$input =$request->getBody();
 
 	if ($session->isUserLoggedIn(true)) { 
 		$app->response->redirect($app->urlFor('session'), 303);
@@ -23,7 +26,7 @@ $app->post('/login', function () use($app) {
 	}
 
 	$req_fields = array('username','password' );
-	verifyRequiredParams($req_fields,$input);
+	// verifyRequiredParams($req_fields,$input);
 	$username = remove_junk($input['username']);
 	$password = remove_junk($input['password']);
 
@@ -73,4 +76,17 @@ $app->get('/logout',function (){
 	$session->logout();
 	$arrOut['message'] = "Sesion cerrada";
     echoResponse(409,$arrOut);	
+});
+$app->post('/foo',function ($request, $response){
+	/*$vars = $request->getParsedBody();
+
+	// $response = $response->withAddedHeader('Content-type', 'application/json');
+	$body = $response->getBody();
+	$out = json_encode($vars);
+	$body->write($out);*/
+
+	$arrOut['message'] = "Sesion cerrada";
+    echoResponse(409,$arrOut,$response);
+	
+	return $response;
 });
