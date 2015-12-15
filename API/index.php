@@ -34,7 +34,7 @@ function verifyRequiredParams($required_fields,$request_params, ResponseInterfac
         $output["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
         $output['info'] = $request_params;
         $output['count'] = count($request_params);
-        echoResponse(500, $output,$response);
+        return echoResponse(500, $output,$response);
     }
 }
 

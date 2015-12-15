@@ -6,24 +6,29 @@ $app->get('/users',function ($request, $response ){
 });
 //-----------./Usuarios------------------//
 //-----------Productos------------------//
-$app->get('/products(/:type(/:name))',function ($request, $response,  $args){
-	
-  if ($args['name']!= '' && $args['type'] =='list') {
-    $products = find_product_by_title($name);
-    return echoResponse(200,$products,$response);
-  }elseif ($args['type']=='single'){
-    global $db;
-    $product_title = remove_junk($db->escape($name));
-    $results = find_all_product_info_by_title($product_title);
-    return echoResponse(200,$results,$response);
-  }else{
+$app->group('/products',function (){
+
+  $this->get('/all',function ($request, $response){
     $products = join_product_table();
     return echoResponse(200,$products,$response);
-  }
+  });
+
+  $this->get('/{type}/{name}',function ($request, $response,  $args){
+	
+    if ($args['name']!= '' && $args['type'] =='list') {
+      $products = find_product_by_title($name);
+      return echoResponse(200,$products,$response);
+    }elseif ($args['type']=='single'){
+      global $db;
+      $product_title = remove_junk($db->escape($args['name']));
+      $results = find_all_product_info_by_title($product_title);
+      return echoResponse(200,$results,$response);
+    }
+  });
 });
 //-----------./Productos------------------//
 //-----------Categorias------------------//
-$app->get('/categories',function ($request, $response ){
+$app->get('/category',function ($request, $response ){
 	$all_categories = find_all('categories');
 	return echoResponse(200,$all_categories,$response);
 });
@@ -50,12 +55,12 @@ $app->post('/category',function ($request, $response ) use ($app) {
    }
 });
 
-$app->put('/category/:id', function ($request, $response, $id) use ($app) {
+$app->put('/category/{id}', function ($request, $response, $args) use ($app) {
   $input = $app->request->put();
 
-  $categorie = find_by_id('categories',(int)$id);
+  $categorie = find_by_id('categories',(int)$args['id']);
   if(!$categorie){
-    $arrOut['message'] = "No se encontro el Id de la categoria ".$id;
+    $arrOut['message'] = "No se encontro el Id de la categoria ".$args['id'];
     return echoResponse(404,$arrOut,$response);
   }
   $req_field = array('categorie-name');
@@ -79,10 +84,10 @@ $app->put('/category/:id', function ($request, $response, $id) use ($app) {
   }    
 });
 
-$app->delete('/category/:id', function ($request, $response, $id) {
-    $categorie = find_by_id('categories',(int)$id);
+$app->delete('/category/{id}', function ($request, $response, $args) {
+    $categorie = find_by_id('categories',(int)$args['id']);
     if (!$categorie) {
-        $arrOut['message'] = "No existe la categoria ".$id;
+        $arrOut['message'] = "No existe la categoria ".$args['id'];
         return echoResponse(404,$arrOut,$response);
     }else{
       $delete_id = delete_by_id('categories',(int)$categorie['id']);
@@ -98,34 +103,36 @@ $app->delete('/category/:id', function ($request, $response, $id) {
 });
 //-----------./Categorias------------------//
 //-----------Ventas------------------//
-$app->get('/sales',function ($request, $response ){
+$app->get('/sales/all',function ($request, $response ){
 	$sales = find_all_sale();
 	return echoResponse(200,$sales,$response);
 });
-$app->get('/sales/:id',function ($request, $response, $id){
-  $sale = find_by_id('sales',(int)$id);
-  return echoResponse(200,$sale,$response);
-});
-$app->get('/sales/:report',function ($request, $response, $report){
-  switch ($report) {
-    case 'daily':
-      $year  = date('Y');
-      $month = date('m');
-      $sales = dailySales($year,$month);
-      return echoResponse(200,$sales,$response);
-      break;
-    case 'monthly':
-      $year = date('Y');
-      $sales = monthlySales($year);
-      return echoResponse(200,$sales,$response);
-      break;
-    
-    default:
-      $arrOut['message']= "Tipo de reporte incorrecto.";
-      return echoResponse(400,$arrOut,$response,$response);
-      break;
-  }
-  
+$app->get('/sales/{id}',function ($request, $response, $args){
+  if (is_numeric($args['id'])) {
+    $sale = find_by_id('sales',(int)$args['id']);
+    return echoResponse(200,$sale,$response);
+  }elseif (is_string($args['id'])){
+    switch ($args['id']) {
+      case 'daily':
+        $year  = date('Y');
+        $month = date('m');
+        $sales = dailySales($year,$month);
+        return echoResponse(200,$sales,$response);
+        break;
+      case 'monthly':
+        $year = date('Y');
+        $sales = monthlySales($year);
+        return echoResponse(200,$sales,$response);
+        break;
+      default:
+        $arrOut['message']= "Tipo de reporte incorrecto.";
+        return echoResponse(400,$arrOut,$response,$response);
+        break;
+    }
+  }else{
+    $arrOut['message']= "Parametro incorrecto.";
+    return echoResponse(400,$arrOut,$response,$response);
+  }  
 });
 $app->post('/sales',function ($request, $response ) use ($app) {
 	$input = $request->getParsedBody();
@@ -157,11 +164,11 @@ $app->post('/sales',function ($request, $response ) use ($app) {
            return echoResponse(400,$arrOut,$response) ;
         }
 });
-$app->put('/sale/:id', function ($request, $response, $id) use ($app) {
-    //Update book identified by $id
-  $sale = find_by_id('sales',$id);
+$app->put('/sale/{id}', function ($request, $response, $args) use ($app) {
+    //Update book identified by $args
+  $sale = find_by_id('sales',$args['id']);
   if (!$sale) {
-    $arrOut['message'] = "No existe el producto ".$id;
+    $arrOut['message'] = "No existe el producto ".$args['id'];
     return echoResponse(404,$arrOut,$response) ;
   }
   $product = find_by_id('products',$sale['product_id']);
@@ -194,8 +201,8 @@ $app->put('/sale/:id', function ($request, $response, $id) use ($app) {
     return echoResponse(400,$arrOut,$response);
  }
 });
-$app->delete('/sale/:id',function ($request, $response, $id)use ($app){
-  $delete_id = delete_by_id('sales',(int)$id);
+$app->delete('/sale/{id}',function ($request, $response, $args)use ($app){
+  $delete_id = delete_by_id('sales',(int)$args['id']);
   if($delete_id){
       $arrOut['message'] = 'Venta Borrada.';
       return echoResponse(200,$arrOut,$response);
