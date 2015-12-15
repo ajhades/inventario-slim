@@ -15,7 +15,7 @@ $app = new \Slim\App;
 require_once 'auth.php';
 require_once 'services.php';
 
-/*function verifyRequiredParams($required_fields,$request_params) {
+function verifyRequiredParams($required_fields,$request_params, ResponseInterface  $response) {
     $error = false;
     $error_fields = "";
     foreach ($required_fields as $field) {
@@ -28,33 +28,30 @@ require_once 'services.php';
     if ($error) {
         // Required field(s) are missing or empty
         // echo error json and stop the app
-        $response = array();
+        $output = array();
         // $app = \Slim\Slim::getInstance();
-        $response["status"] = "error";
-        $response["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
-        $response['info'] = $request_params;
-        $response['count'] = count($request_params);
-        echoResponse(500, $response);
-        $app->stop();
+        $output["status"] = "error";
+        $output["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
+        $output['info'] = $request_params;
+        $output['count'] = count($request_params);
+        echoResponse(500, $output,$response);
     }
-}*/
+}
 
 
 $app->add(function ($request, $response, $next) {
     $response = $response->withAddedHeader('Content-type', 'application/json;charset=utf-8');
-    $response =  $response->withStatus(201);
+    // $response =  $response->withStatus(201);
     $response = $next($request, $response);
     return $response;
 });
 
-function echoResponse($status_code,$r, ResponseInterface  $response) {
-    $response = $response->withAddedHeader('Content-type', 'application/json;charset=utf-8');
-    $response = $response->withStatus($status_code);
-    $body = $response->getBody();
-    $body->write(json_encode($r));
+function echoResponse($status_code,$input, ResponseInterface  $response) {
+    $response = $response->withStatus($status_code)->write(json_encode($input));
     global $db;
     if(isset($db)) { $db->db_disconnect(); }
     return $response;
+    // $app-stop();
 }
 
 $app->run();

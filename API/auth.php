@@ -2,7 +2,7 @@
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-$app->get('/session',function (){
+$app->get('/session',function ($request, $response){
 
 	global $session;
 	$user = current_user();
@@ -11,82 +11,72 @@ $app->get('/session',function (){
 		$arrOut['name'] = $user['name'];
 		$arrOut['id'] = $user['id'];
 		$arrOut['level'] = $user['user_level'];
-        echoResponse(200,$arrOut);
+        return  echoResponse(200,$arrOut, $response);
 	}
 })->setName('session');
 
-$app->post('/login', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->post('/login', function ($request, $response) {
 	global $session;
-	$input =$request->getBody();
+	$input =$request->getParsedBody();
 
 	if ($session->isUserLoggedIn(true)) { 
-		$app->response->redirect($app->urlFor('session'), 303);
-		// $arrOut['message'] = "Session abierta";
-  //       echoResponse(200,$arrOut);
+		$response = $response->withRedirect('session');
+		return $response;
 	}
+		$req_fields = array('username','password' );
+		// verifyRequiredParams($req_fields,$input);
+		$username = remove_junk($input['username']);
+		$password = remove_junk($input['password']);
 
-	$req_fields = array('username','password' );
-	// verifyRequiredParams($req_fields,$input);
-	$username = remove_junk($input['username']);
-	$password = remove_junk($input['password']);
+		if(empty($errors)){
 
-	if(empty($errors)){
+			$user = authenticate_v2($username, $password);
 
-		$user = authenticate_v2($username, $password);
+			if($user):
+				
+		           //create session with id
+				$session->login($user['id']);
+		           //Update Sign in time
+				updateLastLogIn($user['id']);
+		           // redirect user to group home page by user level
+				if($user['user_level'] === '1'):
+					$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
+	        		return  echoResponse(200,$arrOut, $response);
+				elseif ($user['user_level'] === '2'):
+					$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
+	        		return  echoResponse(200,$arrOut, $response);
+				else:
+					$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
+	        		return  echoResponse(200,$arrOut, $response);
+				endif;
 
-		if($user):
-			
-	           //create session with id
-			$session->login($user['id']);
-	           //Update Sign in time
-			updateLastLogIn($user['id']);
-	           // redirect user to group home page by user level
-			if($user['user_level'] === '1'):
-				$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
-        		echoResponse(200,$arrOut);
-			elseif ($user['user_level'] === '2'):
-				$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
-        		echoResponse(200,$arrOut);
 			else:
-				$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
-        		echoResponse(200,$arrOut);
+				$arrOut['message'] = "Usuario y contraseña incorrectos.";
+	        	return  echoResponse(400,$arrOut,$response);
 			endif;
 
-		else:
-			$arrOut['message'] = "Usuario y contraseña incorrectos.";
-			/*$arrOut['user'] = $user;
-			$arrOut['pass'] = $password;
-			
-			$arrOut['hash'] = password_hash($password, PASSWORD_DEFAULT);
-			$password_request = password_verify($password,$user['password']);
-			$arrOut['result_hash'] =$password_request;*/
-        	echoResponse(400,$arrOut);
-		endif;
+		} else {
 
-	} else {
-
-		$arrOut['message'] = "Error: ".$errors;
-        echoResponse(409,$arrOut);
-	}
-
+			$arrOut['message'] = "Error: ".$errors;
+	        return  echoResponse(409,$arrOut, $response);
+		}
 });
 
-$app->get('/logout',function (){
+$app->get('/logout',function ($request, $response){
 	global $session;
 	$session->logout();
 	$arrOut['message'] = "Sesion cerrada";
-    echoResponse(409,$arrOut);	
+    return echoResponse(200,$arrOut,$response);	
 });
 $app->post('/foo',function ($request, $response){
-	/*$vars = $request->getParsedBody();
+	$vars = $request->getParsedBody();
 
 	// $response = $response->withAddedHeader('Content-type', 'application/json');
+	/*$response =  $response->withStatus(400);
 	$body = $response->getBody();
 	$out = json_encode($vars);
 	$body->write($out);*/
 
 	$arrOut['message'] = "Sesion cerrada";
-    echoResponse(409,$arrOut,$response);
-	
-	return $response;
+	return echoResponse(200,$arrOut,$response);
 });

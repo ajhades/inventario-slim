@@ -1,36 +1,36 @@
 <?php
 //-----------Usuarios------------------//
-$app->get('/users',function (){
+$app->get('/users',function ($request, $response ){
 	$all_users = find_all_user();
-	echoResponse(200,$all_users);
+	return echoResponse(200,$all_users,$response);
 });
 //-----------./Usuarios------------------//
 //-----------Productos------------------//
-$app->get('/products(/:type(/:name))',function ($type='',$name=''){
+$app->get('/products(/:type(/:name))',function ($request, $response,  $args){
 	
-  if ($name != '' && $type =='list') {
+  if ($args['name']!= '' && $args['type'] =='list') {
     $products = find_product_by_title($name);
-    echoResponse(200,$products);
-  }elseif ($type =='single'){
+    return echoResponse(200,$products,$response);
+  }elseif ($args['type']=='single'){
     global $db;
     $product_title = remove_junk($db->escape($name));
     $results = find_all_product_info_by_title($product_title);
-    echoResponse(200,$results);
+    return echoResponse(200,$results,$response);
   }else{
     $products = join_product_table();
-    echoResponse(200,$products);
+    return echoResponse(200,$products,$response);
   }
 });
 //-----------./Productos------------------//
 //-----------Categorias------------------//
-$app->get('/categories',function (){
+$app->get('/categories',function ($request, $response ){
 	$all_categories = find_all('categories');
-	echoResponse(200,$all_categories);
+	return echoResponse(200,$all_categories,$response);
 });
-$app->post('/category',function () use ($app) {
-  $input = $app->request->post();
+$app->post('/category',function ($request, $response ) use ($app) {
+  $input = $request->getParsedBody();
   $req_field = array('categorie-name');
-  verifyRequiredParams($req_field,$input);
+  verifyRequiredParams($req_field,$input, $response);
 
   global $db;
   $cat_name = remove_junk($db->escape($input['categorie-name']));
@@ -39,27 +39,27 @@ $app->post('/category',function () use ($app) {
       $sql .= " VALUES ('{$cat_name}')";
       if($db->query($sql)){
         $arrOut['message'] = "Categoria agregada";
-        echoResponse(201,$arrOut);
+        return echoResponse(201,$arrOut,$response);
       } else {
         $arrOut['message'] = "Lo sentimos, no se pudo agregar";
-        echoResponse(400,$arrOut);
+        return echoResponse(400,$arrOut,$response);
       }
    } else {
      $arrOut['message'] =  "Error: ".$errors;
-     echoResponse(500,$arrOut);
+     return echoResponse(500,$arrOut,$response);
    }
 });
 
-$app->put('/category/:id', function ($id) use ($app) {
+$app->put('/category/:id', function ($request, $response, $id) use ($app) {
   $input = $app->request->put();
 
   $categorie = find_by_id('categories',(int)$id);
   if(!$categorie){
     $arrOut['message'] = "No se encontro el Id de la categoria ".$id;
-    echoResponse(404,$arrOut);
+    return echoResponse(404,$arrOut,$response);
   }
   $req_field = array('categorie-name');
-  verifyRequiredParams($req_field,$input);
+  verifyRequiredParams($req_field,$input, $response);
   global $db;
   $cat_name = remove_junk($db->escape($input['categorie-name']));
   if(empty($errors)){
@@ -68,69 +68,69 @@ $app->put('/category/:id', function ($id) use ($app) {
      $result = $db->query($sql);
      if($result && $db->affected_rows() === 1) {
        $arrOut['message'] = "Categoria actualizada";
-       echoResponse(200,$arrOut);
+       return echoResponse(200,$arrOut,$response);
      } else {
        $arrOut['message'] = "Lo sentimos! No se pudo actualizar.";
-       echoResponse(400,$arrOut);
+       return echoResponse(400,$arrOut,$response);
      }
   } else {
     $arrOut['message'] = "Error: ".$errors;
-    echoResponse(500,$arrOut);
+    return echoResponse(500,$arrOut,$response);
   }    
 });
 
-$app->delete('/category/:id', function ($id) {
+$app->delete('/category/:id', function ($request, $response, $id) {
     $categorie = find_by_id('categories',(int)$id);
     if (!$categorie) {
         $arrOut['message'] = "No existe la categoria ".$id;
-        echoResponse(404,$arrOut);
+        return echoResponse(404,$arrOut,$response);
     }else{
       $delete_id = delete_by_id('categories',(int)$categorie['id']);
       if($delete_id){
           $arrOut['message'] = "Categoria borrada.";
-          echoResponse(200,$arrOut);
+          return echoResponse(200,$arrOut,$response);
       } else {
           $arrOut['message'] = "Error al borrar categoria.";
-          echoResponse(400,$arrOut);
+          return echoResponse(400,$arrOut,$response);
       }
     }
     
 });
 //-----------./Categorias------------------//
 //-----------Ventas------------------//
-$app->get('/sales',function (){
+$app->get('/sales',function ($request, $response ){
 	$sales = find_all_sale();
-	echoResponse(200,$sales);
+	return echoResponse(200,$sales,$response);
 });
-$app->get('/sales/:id',function ($id){
+$app->get('/sales/:id',function ($request, $response, $id){
   $sale = find_by_id('sales',(int)$id);
-  echoResponse(200,$sale);
+  return echoResponse(200,$sale,$response);
 });
-$app->get('/sales/:report',function ($report){
+$app->get('/sales/:report',function ($request, $response, $report){
   switch ($report) {
     case 'daily':
       $year  = date('Y');
       $month = date('m');
       $sales = dailySales($year,$month);
-      echoResponse(200,$sales);
+      return echoResponse(200,$sales,$response);
       break;
     case 'monthly':
       $year = date('Y');
       $sales = monthlySales($year);
-      echoResponse(200,$sales);
+      return echoResponse(200,$sales,$response);
       break;
     
     default:
       $arrOut['message']= "Tipo de reporte incorrecto.";
-      echoResponse(400,$arrOut);
+      return echoResponse(400,$arrOut,$response,$response);
       break;
   }
   
 });
-$app->post('/sales',function () use ($app) {
-	$input = $app->request->post();
+$app->post('/sales',function ($request, $response ) use ($app) {
+	$input = $request->getParsedBody();
 	$req_fields = array('s_id','quantity','price','total' );
-    verifyRequiredParams($req_fields,$input);
+    verifyRequiredParams($req_fields,$input, $response);
     global $db;
         if(empty($errors)){
           $p_id      = $db->escape((int)$input['s_id']);
@@ -147,28 +147,28 @@ $app->post('/sales',function () use ($app) {
                 if($db->query($sql)){
                   update_product_qty($s_qty,$p_id);
                   $arrOut['message'] = 'Nueva venta agregada.';
-                  echoResponse(201,$arrOut);
+                  return echoResponse(201,$arrOut,$response);
                 } else {
                   $arrOut['message'] = "Error: ".$error;
-                  echoResponse(400,$arrOut) ;
+                  return echoResponse(400,$arrOut,$response) ;
                 }
         } else {
            $arrOut['message'] = "Error 2: ".$error;
-           echoResponse(400,$arrOut) ;
+           return echoResponse(400,$arrOut,$response) ;
         }
 });
-$app->put('/sale/:id', function ($id) use ($app) {
+$app->put('/sale/:id', function ($request, $response, $id) use ($app) {
     //Update book identified by $id
   $sale = find_by_id('sales',$id);
   if (!$sale) {
     $arrOut['message'] = "No existe el producto ".$id;
-    echoResponse(404,$arrOut) ;
+    return echoResponse(404,$arrOut,$response) ;
   }
   $product = find_by_id('products',$sale['product_id']);
 
-  $input = $app->request->post();
+  $input = $request->getParsedBody();
   $req_fields = array('quantity','price','total', 'date' );
-  verifyRequiredParams($req_fields, $input);
+  verifyRequiredParams($req_fields, $input, $response);
   global $db;
   if(empty($errors)){
     $p_id      = $db->escape((int)$product['id']);
@@ -184,25 +184,25 @@ $app->put('/sale/:id', function ($id) use ($app) {
     if( $result && $db->affected_rows() === 1){
       update_product_qty($s_qty,$p_id);
       $arrOut['message'] = "Venta Actualizada";
-      echoResponse(200,$arrOut);
+      return echoResponse(200,$arrOut,$response);
     } else {
       $arrOut['message'] = "Fallo actualizar venta";
-      echoResponse(400,$arrOut);
+      return echoResponse(400,$arrOut,$response);
     }
   } else {
     $arrOut['message'] = "Error: ".$errors;
-    echoResponse(400,$arrOut);
+    return echoResponse(400,$arrOut,$response);
  }
 });
-$app->delete('/sale/:id',function ($id)use ($app){
+$app->delete('/sale/:id',function ($request, $response, $id)use ($app){
   $delete_id = delete_by_id('sales',(int)$id);
   if($delete_id){
       $arrOut['message'] = 'Venta Borrada.';
-      echoResponse(200,$arrOut);
+      return echoResponse(200,$arrOut,$response);
   } else {
       $arrOut['message'] = "No se puedo borrar la venta.";
-      echoResponse(400,$arrOut);
-      // echoResponse(200,$res);
+      return echoResponse(400,$arrOut,$response);
+      // return echoResponse(200,$res);
       // $app->response->setStatus(400);
       // $arrOut['message'] = 'Sale deletion failed.';
       // echo json_encode($arrOut);
