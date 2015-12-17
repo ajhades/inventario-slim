@@ -1,5 +1,5 @@
 <?php
-$app->get('/session',function (){
+$app->get('/session', function (){
 
 	global $session;
 	$user = current_user();
@@ -12,9 +12,10 @@ $app->get('/session',function (){
 	}
 })->name('session');
 
-$app->post('/login', function () use($app) {
+$app->post('/login',  function () use($app) {
 	global $session;
 	$input = $app->request->post();
+	// $headers = $app->request()->headers()->all();
 
 	if ($session->isUserLoggedIn(true)) { 
 		$app->response->redirect($app->urlFor('session'), 303);
@@ -37,15 +38,27 @@ $app->post('/login', function () use($app) {
 			$session->login($user['id']);
 	           //Update Sign in time
 			updateLastLogIn($user['id']);
+
+			$user['token'] = bin2hex(openssl_random_pseudo_bytes(16)); //generate a random token
+ 
+            $tokenExpiration = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+            updateToken($user['id'],$user['token'], $tokenExpiration);
 	           // redirect user to group home page by user level
 			if($user['user_level'] === '1'):
 				$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
+				$arrOut['user'] = $user;
+				// $arrOut['headers'] = $headers;
         		echoResponse(200,$arrOut);
 			elseif ($user['user_level'] === '2'):
 				$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
+				$arrOut['user'] = $user;
+				// $arrOut['headers'] = $headers;
         		echoResponse(200,$arrOut);
 			else:
 				$arrOut['message'] = "Hola ".$user['username'].",Bienvenido.";
+				$arrOut['user'] = $user;
+				// $arrOut['headers'] = $headers;
         		echoResponse(200,$arrOut);
 			endif;
 
@@ -73,4 +86,10 @@ $app->get('/logout',function (){
 	$session->logout();
 	$arrOut['message'] = "Sesion cerrada";
     echoResponse(409,$arrOut);	
+});
+$app->get('/foo','autenticacion' ,function ()use ($app){
+
+	$arrOut['message'] = "Autorizado";
+	$arrOut['user'] = $app->auth_user;
+	echoResponse(202,$arrOut);	
 });

@@ -350,5 +350,66 @@ function  monthlySales($year){
   $sql .= " ORDER BY date_format(s.date, '%c' ) ASC";
   return find_by_sql($sql);
 }
+  /*--------------------------------------------------------------*/
+  /* Function to validate token of a user
+  /*--------------------------------------------------------------*/
+
+ function validateToken($token)
+  {
+    global $db;
+    $date = make_date();
+    $sql = "SELECT token_expire FROM users WHERE token ='{$token}' LIMIT 1";
+    $result = $db->query($sql);
+    if ($result && $db->affected_rows() === 1) {
+      $user = $db->fetch_assoc($result);
+      if ($user['token_expire'] > $date ) {
+        return $result;
+      }else{
+        return false;
+      }
+    } else {
+      return false;
+    }
+    
+    // return ($result && $db->affected_rows() === 1 ? true : false);
+  }
+
+  /*--------------------------------------------------------------*/
+  /* Function to update token a user
+  /*--------------------------------------------------------------*/
+
+ function updateToken($user_id, $token, $expiration)
+  {
+    global $db;
+    // $date = make_date();
+    $sql = "UPDATE users SET token='{$token}',token_expire='{$expiration}' WHERE id ='{$user_id}' LIMIT 1";
+    $result = $db->query($sql);
+    return ($result && $db->affected_rows() === 1 ? true : false);
+  }
+  /*--------------------------------------------------------------*/
+  /* Function to keep token alive 
+  /*--------------------------------------------------------------*/
+
+ function keepTokenAlive($token)
+  {
+    global $db;
+    // $date = make_date();
+    $tokenExpiration = date('Y-m-d H:i:s', strtotime('+1 hour'));
+    $sql = "UPDATE users SET token_expire='{$tokenExpiration}' WHERE token ='{$token}' LIMIT 1";
+    $result = $db->query($sql);
+    return ($result && $db->affected_rows() === 1 ? true : false);
+  }
+  /*--------------------------------------------------------------*/
+  /* Function to get user by token
+  /*--------------------------------------------------------------*/
+
+ function getUserByToken($token)
+  {
+    global $db;
+    // $date = make_date();
+    $sql = "SELECT id,username,user_level,token_expire FROM users WHERE token ='{$token}' LIMIT 1";
+    $result = $db->query($sql);
+    return ($result && $db->affected_rows() === 1 ? $user = $db->fetch_assoc($result) : false);
+  }
 
 ?>

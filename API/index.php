@@ -6,11 +6,31 @@ header("Access-Control-Allow-Headers: origin, content-type, accept");
 date_default_timezone_set('America/Bogota');
 require '../vendor/autoload.php';
 require('includes/load.php');
+require_once('TokenAuth.php');
 
 $app = new \Slim\Slim();
 require_once 'auth.php';
 require_once 'services.php';
 
+// $app->add(new \TokenAuth());
+function autenticacion()
+{
+    $app = \Slim\Slim::getInstance();
+    $tokenAuth = $app->request()->headers()->get('Authorization');
+        
+        //Check if our token is valid
+        if (validateToken($tokenAuth)) {
+            //Get the user and make it available for the controller
+           $usrObj = getUserByToken($tokenAuth);
+            $app->auth_user = $usrObj;
+            //Update token's expiration
+            keepTokenAlive($tokenAuth);
+            //Continue with execution
+        } else {
+            $response["status"] = "error";
+            echoResponse(401, $response);
+        }
+}
 function verifyRequiredParams($required_fields,$request_params) {
     $error = false;
     $error_fields = "";
