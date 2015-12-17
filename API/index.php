@@ -1,12 +1,12 @@
 <?php
 header ( 'Content-type: application / json; charset = utf-8' );
-header("access-control-allow-origin: *");
+// header("access-control-allow-origin: *");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: origin, content-type, accept");
 date_default_timezone_set('America/Bogota');
 require '../vendor/autoload.php';
 require('includes/load.php');
-require_once('TokenAuth.php');
+// require_once('TokenAuth.php');
 
 $app = new \Slim\Slim();
 $autenticacion_v2 =  function ( $role = '' ) {
