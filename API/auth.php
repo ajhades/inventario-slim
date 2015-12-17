@@ -64,12 +64,6 @@ $app->post('/login',  function () use($app) {
 
 		else:
 			$arrOut['message'] = "Usuario y contraseña incorrectos.";
-			/*$arrOut['user'] = $user;
-			$arrOut['pass'] = $password;
-			
-			$arrOut['hash'] = password_hash($password, PASSWORD_DEFAULT);
-			$password_request = password_verify($password,$user['password']);
-			$arrOut['result_hash'] =$password_request;*/
         	echoResponse(400,$arrOut);
 		endif;
 
@@ -81,13 +75,13 @@ $app->post('/login',  function () use($app) {
 
 });
 
-$app->get('/logout',function (){
+$app->get('/logout','borrarToken',function () use ($app){
 	global $session;
 	$session->logout();
 	$arrOut['message'] = "Sesion cerrada";
-    echoResponse(409,$arrOut);	
+    echoResponse(202,$arrOut);	
 });
-$app->get('/foo','autenticacion' ,function ()use ($app){
+$app->get('/foo',$autenticacion_v2(['3']) ,function () use ($app){
 
 	$arrOut['message'] = "Autorizado";
 	$arrOut['user'] = $app->auth_user;

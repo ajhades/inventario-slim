@@ -1,12 +1,12 @@
 <?php
 //-----------Usuarios------------------//
-$app->get('/users',function (){
-	$all_users = find_all_user();
-	echoResponse(200,$all_users);
+$app->get('/users',$autenticacion_v2(['1']),function () use ($app){
+    $all_users = find_all_user();
+    echoResponse(200,$all_users); 
 });
 //-----------./Usuarios------------------//
 //-----------Productos------------------//
-$app->get('/products(/:type(/:name))',function ($type='',$name=''){
+$app->get('/products(/:type(/:name))',function ($type='',$name='') {
 	
   if ($name != '' && $type =='list') {
     $products = find_product_by_title($name);
@@ -27,59 +27,59 @@ $app->get('/categories',function (){
 	$all_categories = find_all('categories');
 	echoResponse(200,$all_categories);
 });
-$app->post('/category',function () use ($app) {
-  $input = $app->request->post();
-  $req_field = array('categorie-name');
-  verifyRequiredParams($req_field,$input);
+$app->post('/category',$autenticacion_v2(['1']),function () use ($app) {
+    $input = $app->request->post();
+    $req_field = array('categorie-name');
+    verifyRequiredParams($req_field,$input);
 
-  global $db;
-  $cat_name = remove_junk($db->escape($input['categorie-name']));
-  if(empty($errors)){
-      $sql  = "INSERT INTO categories (name)";
-      $sql .= " VALUES ('{$cat_name}')";
-      if($db->query($sql)){
-        $arrOut['message'] = "Categoria agregada";
-        echoResponse(201,$arrOut);
-      } else {
-        $arrOut['message'] = "Lo sentimos, no se pudo agregar";
-        echoResponse(400,$arrOut);
-      }
-   } else {
-     $arrOut['message'] =  "Error: ".$errors;
-     echoResponse(500,$arrOut);
-   }
-});
-
-$app->put('/category/:id', function ($id) use ($app) {
-  $input = $app->request->put();
-
-  $categorie = find_by_id('categories',(int)$id);
-  if(!$categorie){
-    $arrOut['message'] = "No se encontro el Id de la categoria ".$id;
-    echoResponse(404,$arrOut);
-  }
-  $req_field = array('categorie-name');
-  verifyRequiredParams($req_field,$input);
-  global $db;
-  $cat_name = remove_junk($db->escape($input['categorie-name']));
-  if(empty($errors)){
-        $sql = "UPDATE categories SET name='{$cat_name}'";
-       $sql .= " WHERE id='{$categorie['id']}'";
-     $result = $db->query($sql);
-     if($result && $db->affected_rows() === 1) {
-       $arrOut['message'] = "Categoria actualizada";
-       echoResponse(200,$arrOut);
+    global $db;
+    $cat_name = remove_junk($db->escape($input['categorie-name']));
+    if(empty($errors)){
+        $sql  = "INSERT INTO categories (name)";
+        $sql .= " VALUES ('{$cat_name}')";
+        if($db->query($sql)){
+          $arrOut['message'] = "Categoria agregada";
+          echoResponse(201,$arrOut);
+        } else {
+          $arrOut['message'] = "Lo sentimos, no se pudo agregar";
+          echoResponse(400,$arrOut);
+        }
      } else {
-       $arrOut['message'] = "Lo sentimos! No se pudo actualizar.";
-       echoResponse(400,$arrOut);
+       $arrOut['message'] =  "Error: ".$errors;
+       echoResponse(500,$arrOut);
      }
-  } else {
-    $arrOut['message'] = "Error: ".$errors;
-    echoResponse(500,$arrOut);
-  }    
 });
 
-$app->delete('/category/:id', function ($id) {
+$app->put('/category/:id',$autenticacion_v2(['1']), function ($id) use ($app) {
+    $input = $app->request->put();
+
+    $categorie = find_by_id('categories',(int)$id);
+    if(!$categorie){
+      $arrOut['message'] = "No se encontro el Id de la categoria ".$id;
+      echoResponse(404,$arrOut);
+    }
+    $req_field = array('categorie-name');
+    verifyRequiredParams($req_field,$input);
+    global $db;
+    $cat_name = remove_junk($db->escape($input['categorie-name']));
+    if(empty($errors)){
+          $sql = "UPDATE categories SET name='{$cat_name}'";
+         $sql .= " WHERE id='{$categorie['id']}'";
+       $result = $db->query($sql);
+       if($result && $db->affected_rows() === 1) {
+         $arrOut['message'] = "Categoria actualizada";
+         echoResponse(200,$arrOut);
+       } else {
+         $arrOut['message'] = "Lo sentimos! No se pudo actualizar.";
+         echoResponse(400,$arrOut);
+       }
+    } else {
+      $arrOut['message'] = "Error: ".$errors;
+      echoResponse(500,$arrOut);
+    }
+});
+
+$app->delete('/category/:id',$autenticacion_v2(['1']),function ($id) use ($app){
     $categorie = find_by_id('categories',(int)$id);
     if (!$categorie) {
         $arrOut['message'] = "No existe la categoria ".$id;
@@ -98,15 +98,15 @@ $app->delete('/category/:id', function ($id) {
 });
 //-----------./Categorias------------------//
 //-----------Ventas------------------//
-$app->get('/sales',function (){
-	$sales = find_all_sale();
-	echoResponse(200,$sales);
+$app->get('/sales',$autenticacion_v2(['3']),function () use ($app){
+  	$sales = find_all_sale();
+  	echoResponse(200,$sales);
 });
-$app->get('/sales/:id',function ($id){
-  $sale = find_by_id('sales',(int)$id);
-  echoResponse(200,$sale);
+$app->get('/sales/:id',$autenticacion_v2(['3']),function ($id) use ($app){
+    $sale = find_by_id('sales',(int)$id);
+    echoResponse(200,$sale);
 });
-$app->get('/sales/:report',function ($report){
+$app->get('/sales/:report',$autenticacion_v2(['3']),function ($report) use ($app){
   switch ($report) {
     case 'daily':
       $year  = date('Y');
@@ -127,7 +127,7 @@ $app->get('/sales/:report',function ($report){
   }
   
 });
-$app->post('/sales',function () use ($app) {
+$app->post('/sales',$autenticacion_v2(['3']),function () use ($app) {
 	$input = $app->request->post();
 	$req_fields = array('s_id','quantity','price','total' );
     verifyRequiredParams($req_fields,$input);
@@ -157,7 +157,7 @@ $app->post('/sales',function () use ($app) {
            echoResponse(400,$arrOut) ;
         }
 });
-$app->put('/sale/:id', function ($id) use ($app) {
+$app->put('/sale/:id',$autenticacion_v2(['3']) , function ($id) use ($app) {
     //Update book identified by $id
   $sale = find_by_id('sales',$id);
   if (!$sale) {
@@ -194,7 +194,7 @@ $app->put('/sale/:id', function ($id) use ($app) {
     echoResponse(400,$arrOut);
  }
 });
-$app->delete('/sale/:id',function ($id)use ($app){
+$app->delete('/sale/:id',$autenticacion_v2(['3']) ,function ($id)use ($app){
   $delete_id = delete_by_id('sales',(int)$id);
   if($delete_id){
       $arrOut['message'] = 'Venta Borrada.';

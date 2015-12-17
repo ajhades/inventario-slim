@@ -9,28 +9,49 @@ require('includes/load.php');
 require_once('TokenAuth.php');
 
 $app = new \Slim\Slim();
-require_once 'auth.php';
-require_once 'services.php';
-
-// $app->add(new \TokenAuth());
-function autenticacion()
-{
-    $app = \Slim\Slim::getInstance();
-    $tokenAuth = $app->request()->headers()->get('Authorization');
-        
+$autenticacion_v2 =  function ( $role = '' ) {
+    return function () use ( $role ) {
+        $app = \Slim\Slim::getInstance();
+        $tokenAuth = $app->request()->headers()->get('Authorization');
         //Check if our token is valid
         if (validateToken($tokenAuth)) {
             //Get the user and make it available for the controller
            $usrObj = getUserByToken($tokenAuth);
             $app->auth_user = $usrObj;
-            //Update token's expiration
-            keepTokenAlive($tokenAuth);
-            //Continue with execution
+            if ($usrObj['user_level']=='1' || in_array($usrObj['user_level'], $role)) {
+               //Update token's expiration
+                keepTokenAlive($tokenAuth);
+            } else {
+                $response["message"] = "Usuario no autorizado, por favor comuniquese con el Admin";
+                echoResponse(401, $response);
+            }
+            
+            
         } else {
-            $response["status"] = "error";
+            $response["message"] = "Inicie session";
+            echoResponse(401, $response);
+        }
+    };
+};
+require_once 'auth.php';
+require_once 'services.php';
+
+// $app->add(new \TokenAuth());
+function borrarToken()
+{
+    $app = \Slim\Slim::getInstance();
+    $tokenAuth = $app->request()->headers()->get('Authorization');
+        
+        if (validateToken($tokenAuth)) {
+           $usrObj = getUserByToken($tokenAuth);
+           updateToken($usrObj['id'],'','');
+            $app->auth_user = array();
+        } else {
+            $response["message"] = "Inicie session";
             echoResponse(401, $response);
         }
 }
+
 function verifyRequiredParams($required_fields,$request_params) {
     $error = false;
     $error_fields = "";
