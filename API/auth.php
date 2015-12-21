@@ -79,11 +79,11 @@ $app->get('/logout','borrarToken',function () use ($app){
 	global $session;
 	$session->logout();
 	$arrOut['message'] = "Sesion cerrada";
-    echoResponse(202,$arrOut);	
+    echoResponse(200,$arrOut);	
 });
 $app->get('/foo',$autenticacion_v2(['3']) ,function () use ($app){
 
 	$arrOut['message'] = "Autorizado";
 	$arrOut['user'] = $app->auth_user;
-	echoResponse(202,$arrOut);	
+	echoResponse(200,$arrOut);	
 });
