@@ -17,3 +17,5 @@ Thumbs.db
 *.jar
 *.war
 *.ea
+
+*.ini

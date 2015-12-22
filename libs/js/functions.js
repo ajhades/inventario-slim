@@ -95,3 +95,12 @@ function suggetion() {
             autoclose: true
         });
   });
+function editar (id) {
+  $.get( "updatestatus.php?id="+id, function( data ) {
+  console.log(data)
+  if (data ==1) {
+    alert('Editado');
+    location.reload();
+  };
+});
+}

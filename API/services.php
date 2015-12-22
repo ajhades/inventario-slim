@@ -98,8 +98,12 @@ $app->delete('/category/:id',$autenticacion_v2(['1']),function ($id) use ($app){
 });
 //-----------./Categorias------------------//
 //-----------Ventas------------------//
+$app->get('/sale/:idUser',$autenticacion_v2(['3']),function ($idUser) use ($app){
+    $sales = find_all_sale_by_id($idUser);
+    echoResponse(200,$sales);
+});
 $app->get('/sales',$autenticacion_v2(['3']),function () use ($app){
-  	$sales = find_all_sale();
+  	$sales = find_all_sale(1);
   	echoResponse(200,$sales);
 });
 $app->get('/sales/:id',$autenticacion_v2(['3']),function ($id) use ($app){

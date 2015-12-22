@@ -14,7 +14,7 @@
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
          <div class="pull-right">
-           <a href="add_product.php" class="btn btn-primary">Add New</a>
+           <a href="add_product.php" class="btn btn-primary">Agregar</a>
          </div>
         </div>
         <div class="panel-body">
@@ -22,14 +22,15 @@
             <thead>
               <tr>
                 <th class="text-center" style="width: 50px;">#</th>
-                <th> Photo</th>
-                <th> Product Title </th>
-                <th class="text-center" style="width: 10%;"> Categorie </th>
-                <th class="text-center" style="width: 10%;"> Instock </th>
-                <th class="text-center" style="width: 10%;"> Buying Price </th>
-                <th class="text-center" style="width: 10%;"> Saleing Price </th>
-                <th class="text-center" style="width: 10%;"> Product Added </th>
-                <th class="text-center" style="width: 100px;"> Actions </th>
+                <th> Imagen</th>
+                <th> Producto</th>
+                <th class="text-center" style="width: 10%;"> Categoria </th>
+                <th class="text-center" style="width: 10%;"> Disponibles </th>
+                <th class="text-center" style="width: 10%;"> Talla </th>
+                <th class="text-center" style="width: 10%;"> Precio de compra </th>
+                <th class="text-center" style="width: 10%;"> Precio de venta </th>
+                <th class="text-center" style="width: 10%;"> Producto añadido </th>
+                <th class="text-center" style="width: 100px;"> Editar </th>
               </tr>
             </thead>
             <tbody>
@@ -46,15 +47,16 @@
                 <td> <?php echo remove_junk($product['name']); ?></td>
                 <td class="text-center"> <?php echo remove_junk($product['categorie']); ?></td>
                 <td class="text-center"> <?php echo remove_junk($product['quantity']); ?></td>
+                <td class="text-center"> <?php echo remove_junk($product['talla']); ?></td>
                 <td class="text-center"> <?php echo remove_junk($product['buy_price']); ?></td>
                 <td class="text-center"> <?php echo remove_junk($product['sale_price']); ?></td>
                 <td class="text-center"> <?php echo read_date($product['date']); ?></td>
                 <td class="text-center">
                   <div class="btn-group">
-                    <a href="edit_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs"  title="Edit" data-toggle="tooltip">
+                    <a href="edit_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs"  title="Editar" data-toggle="tooltip">
                       <span class="glyphicon glyphicon-edit"></span>
                     </a>
-                    <a href="delete_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-xs"  title="Delete" data-toggle="tooltip">
+                    <a href="delete_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-xs"  title="Eliminar" data-toggle="tooltip">
                       <span class="glyphicon glyphicon-trash"></span>
                     </a>
                   </div>

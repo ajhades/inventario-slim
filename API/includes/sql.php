@@ -210,7 +210,7 @@ function tableExists($table){
    /*--------------------------------------------------------------*/
   function join_product_table(){
      global $db;
-     $sql  =" SELECT p.id,p.name,p.quantity,p.buy_price,p.sale_price,p.media_id,p.date,c.name";
+     $sql  =" SELECT p.id,p.name,p.talla,p.quantity,p.buy_price,p.sale_price,p.media_id,p.date,c.name";
     $sql  .=" AS categorie,m.file_name AS image";
     $sql  .=" FROM products p";
     $sql  .=" LEFT JOIN categories c ON c.id = p.categorie_id";
@@ -285,9 +285,10 @@ function tableExists($table){
  /*--------------------------------------------------------------*/
  function find_all_sale(){
    global $db;
-   $sql  = "SELECT s.id,s.qty,s.status,s.price,s.date,p.name";
+   $sql  = "SELECT s.id,s.qty,s.status,s.price,s.date,p.name,u.username";
    $sql .= " FROM sales s";
    $sql .= " LEFT JOIN products p ON s.product_id = p.id";
+   $sql .= " INNER JOIN users u ON s.user_id = u.id";
    $sql .= " ORDER BY s.date DESC";
    return find_by_sql($sql);
  }
@@ -410,6 +411,20 @@ function  monthlySales($year){
     $sql = "SELECT id,username,user_level,token_expire FROM users WHERE token ='{$token}' LIMIT 1";
     $result = $db->query($sql);
     return ($result && $db->affected_rows() === 1 ? $user = $db->fetch_assoc($result) : false);
-  }
+  }/*--------------------------------------------------------------*/
+ /* Function for find all sales by id
+ /*--------------------------------------------------------------*/
+ function find_all_sale_by_id($idUser){
+   global $db;
+   $id = $idUser;
+   $sql  = "SELECT s.id,s.qty,s.status,s.price,s.date,p.name,u.username";
+   $sql .= " FROM sales s";
+   $sql .= " LEFT JOIN products p ON s.product_id = p.id";
+   $sql .= " INNER JOIN users u ON s.user_id = u.id";
+   $sql .= " WHERE s.user_id = '{$id}'";
+   $sql .= " ORDER BY s.date DESC";
+   
+   return find_by_sql($sql);
+ }
 
 ?>
